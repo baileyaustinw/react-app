@@ -1,35 +1,77 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+function TodoList() {
+  const todos = [
+    { task: "mow the yard", id: crypto.randomUUID() },
+    { task: "wash the dishes", id: crypto.randomUUID() },
+    { task: "sexual intercourse w/ Robyn", id: crypto.randomUUID() },
+  ];
+
+  return (
+    <ul>
+      {todos.map((todo) => (
+        <li key={todo.id}>{todo.task}</li>
+      ))}
+    </ul>
+  );
+}
+
+function ListItem(props) {
+  return <li>{props.animal}</li>;
+}
+
+function List(props) {
+  if (!props.animals) {
+    return <div>Loading...</div>;
+  }
+
+  if (props.animals.length === 0) {
+    return <div>There are no animals in the list</div>;
+  }
+
+  return (
+    <ul>
+      {props.animals.map((animal) => {
+        return <ListItem key={animal} animal={animal} />;
+      })}
+    </ul>
+  );
+}
+
+function Button({ text, color, fontSize }) {
+  const [timesClicked, setTimesClicked] = useState(0);
+
+  const buttonStyle = {
+    color: color,
+    fontSize: fontSize + "px",
+  };
+
+  const handleClick = () => {
+    setTimesClicked(timesClicked + 1);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <p>Clicked {timesClicked} times</p>
+      <button style={buttonStyle} onClick={handleClick}>
+        {text}
+      </button>
     </>
-  )
+  );
 }
 
-export default App
+function App() {
+  const animals = ["Lion", "Snake", "Frog", "Giraffe", "Pig", "Lizard"];
+
+  return (
+    <div>
+      <h1>My favorite animals</h1>
+      <List animals={animals} />
+      <Button text="click me!" color="red" fontSize="16" />
+      <Button text="winner" color="green" fontSize="12" />
+    </div>
+  );
+}
+
+export default App;
